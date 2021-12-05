@@ -180,3 +180,28 @@ def test_find_winning_board_score():
 
     # Solve AoC 4 part 1
     assert find_winning_board_score(input) == 38913
+
+
+def find_last_winning_board_score(raw_input):
+    order, boards = parse_input(raw_input)
+
+    remaining_boards = boards
+    last_winner_board = None
+    rounds_until_winner = None
+    for round in range(1, len(order)):
+        winner_boards = filter(
+            lambda board: check_has_a_complete_line(board, order[:round]),
+            remaining_boards,
+        )
+        winner_board = next(winner_boards, None)
+
+        if winner_board != None:
+            last_winner_board = winner_board
+            remaining_boards.pop(remaining_boards.index(winner_board))
+            rounds_until_winner = order[:round]
+
+    return calculate_score(last_winner_board, rounds_until_winner)
+
+
+def test_find_last_winning_board_score():
+    assert find_last_winning_board_score(example_input) == 1924
