@@ -175,21 +175,23 @@ def test_find_winning_board_score():
 def find_last_winning_board_score(raw_input):
     order, boards = parse_input(raw_input)
 
-    remaining_boards = boards
-    last_winner_board = None
-    rounds_until_winner = None
+    winner_boards = []
+    rounds_until_winner = order
     for round in range(1, len(order)):
-        winner_boards = filter(
-            lambda board: check_has_a_complete_line(board, order[:round]),
-            remaining_boards,
+        round_winner_boards = filter(
+            lambda board: check_has_a_complete_line(board, order[:round])
+            and board not in winner_boards,
+            boards,
         )
-        winner_board = next(winner_boards, None)
+        round_winner_board = next(round_winner_boards, None)
 
-        if winner_board != None:
-            last_winner_board = winner_board
-            remaining_boards.pop(remaining_boards.index(winner_board))
-            rounds_until_winner = order[:round]
+        if round_winner_board == None:
+            continue
 
+        winner_boards.append(round_winner_board)
+        rounds_until_winner = order[:round]
+
+    last_winner_board = winner_boards[-1]
     return calculate_score(last_winner_board, rounds_until_winner)
 
 
