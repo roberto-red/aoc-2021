@@ -130,17 +130,7 @@ def check_has_a_complete_line(board, drawn_numbers):
     drawn_numbers = set(drawn_numbers)
     lines = board + transpose(board)
 
-    return any(
-        map(
-            lambda line: all(
-                map(
-                    lambda number: number in drawn_numbers,
-                    line,
-                ),
-            ),
-            lines,
-        ),
-    )
+    return any([drawn_numbers.issuperset(line) for line in lines])
 
 
 def calculate_score(board, rounds):
