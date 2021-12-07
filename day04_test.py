@@ -198,4 +198,4 @@ def test_find_last_winning_board_score():
     assert find_last_winning_board_score(example_input) == 1924
 
     # Solve AoC 4 part 2
-    assert find_last_winning_board_score(input) == None
+    assert find_last_winning_board_score(input) == 16836
